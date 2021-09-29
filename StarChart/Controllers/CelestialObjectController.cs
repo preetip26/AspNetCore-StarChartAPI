@@ -21,7 +21,7 @@ namespace StarChart.Controllers
         public IActionResult GetById(int id)
         {
             List<CelestialObject> allSatellites = new List<CelestialObject>();
-            CelestialObject celestialObject = _context.CelestialObjects.FirstOrDefault(celesObj => celesObj.OrbitedObjectId == id);
+            CelestialObject celestialObject = _context.CelestialObjects.FirstOrDefault(celesObj => celesObj.Id == id);
             if (celestialObject == null)
             {
                 return NotFound();
@@ -30,7 +30,7 @@ namespace StarChart.Controllers
             {
                 foreach(CelestialObject celesObj in _context.CelestialObjects)
                 {
-                    if(celesObj.OrbitedObjectId == id)
+                    if(celesObj.Id == id)
                     {
                         allSatellites.Add(celesObj);
                     }
@@ -71,21 +71,14 @@ namespace StarChart.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] CelestialObject celestialObject)
         {
-            if (ModelState.IsValid)
-            {
-                _context.CelestialObjects.Add(celestialObject);
-                _context.SaveChanges();
-            }
-            else
-            {
-                return BadRequest();
-            }
-            return CreatedAtRoute("GetById", new { id = celestialObject.OrbitedObjectId }, celestialObject);
+            _context.CelestialObjects.Add(celestialObject);
+            _context.SaveChanges();
+            return CreatedAtRoute("GetById", new { id = celestialObject.Id }, celestialObject);
         }
         [HttpPut("{id}")]
         public IActionResult Update(int id, CelestialObject celestialObject)
         {
-            CelestialObject obj = _context.CelestialObjects.FirstOrDefault(celesObj => celesObj.OrbitedObjectId == id);
+            CelestialObject obj = _context.CelestialObjects.FirstOrDefault(celesObj => celesObj.Id == id);
             if (obj == null)
             {
                 return NotFound();
@@ -102,7 +95,7 @@ namespace StarChart.Controllers
         [HttpPatch("{id}/{name}")]
         public IActionResult RenameObject(int id, string name)
         {
-            CelestialObject obj = _context.CelestialObjects.FirstOrDefault(celesObj => celesObj.OrbitedObjectId == id);
+            CelestialObject obj = _context.CelestialObjects.FirstOrDefault(celesObj => celesObj.Id == id);
             if (obj == null)
             {
                 return NotFound();
@@ -118,7 +111,7 @@ namespace StarChart.Controllers
         public IActionResult Delete(int id)
         {
             List<CelestialObject> allObjects = new List<CelestialObject>();
-            CelestialObject celestialObject = _context.CelestialObjects.FirstOrDefault(celesObj => celesObj.OrbitedObjectId == id);
+            CelestialObject celestialObject = _context.CelestialObjects.FirstOrDefault(celesObj => celesObj.Id == id);
             if (celestialObject == null)
             {
                 return NotFound();
@@ -127,7 +120,7 @@ namespace StarChart.Controllers
             {
                 foreach (CelestialObject celesObj in _context.CelestialObjects)
                 {
-                    if (celesObj.OrbitedObjectId == id)
+                    if (celesObj.Id == id)
                     {
                         allObjects.Add(celesObj);
                     }
