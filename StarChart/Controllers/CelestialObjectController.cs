@@ -60,9 +60,12 @@ namespace StarChart.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            CelestialObject celestialObject = new CelestialObject();
-            celestialObject.Satellites = _context.CelestialObjects.ToList();
-            return Ok(celestialObject);
+            var celestialObjects = _context.CelestialObjects.ToList();
+            foreach (var celesObj in celestialObjects)
+            {
+                celesObj.Satellites = _context.CelestialObjects.Where(obj => obj.OrbitedObjectId == celesObj.Id).ToList();
+            }
+            return Ok(celestialObjects);
         }
         [HttpPost]
         public IActionResult Create([FromBody] CelestialObject celestialObject)
